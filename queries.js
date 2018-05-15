@@ -11,14 +11,26 @@ const dbconfig = {
 const db = pg(dbconfig);
 
 let getAllQSTR = () => {
-    return db.query('SELECT * FROM queries;')
+    let qstr = 'SELECT * FROM queries;'
+    return db.query(qstr)
 }
+
+let createAccountQSTR = () => {
+    let qstr = ''
+    return db.query(qstr)
+}
+
+let processLoginQSTR = () => {
+    let qstr = ''
+    return db.query(qstr)
+}
+
 
 module.exports = {
     getAllQSTR
 }
 
-// const uuid = require('uuid-v4');
+
 
 
 // SELECT
