@@ -30,18 +30,25 @@ app.get('/all', (request, response) => {
 
 
 let createAccount = (request, response) => {
-    console.log(request.body);
-    // let {email, password, username} = request.body;
-    // bcrypt.hash(password, saltRounds)
-    // .then(hash => {
-    //     let credentials = {
-    //         email: email,
-    //         hash: hash,
-    //         username: username
-    //     };
-    //     db.createAccountQSTR(credentials)
-    // })
-    // .then(credentials => response.json(credentials))
+  let {email, password, alias, type} = request.body;
+  bcrypt.hash(password, saltRounds)
+    .then(hash => {
+      let credentials = {
+        email: email,
+        alias: alias,
+        hash: hash,
+        type: type
+      }
+      return credentials;
+    })
+    .then(credentials => {
+      db.createAccountQSTR(credentials);
+      return credentials;
+    })
+    .then(credentials => {
+      console.log(credentials);
+      response.json(credentials);
+    });
 }
 
 

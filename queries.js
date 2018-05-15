@@ -6,28 +6,33 @@ const dbconfig = {
     database: 'inkkarma',
     user: 'jra',
     password: 'sweettuba'
-}
+};
 
 const db = pg(dbconfig);
 
 let getAllQSTR = () => {
     let qstr = 'SELECT * FROM queries;'
-    return db.query(qstr)
+    return db.query(qstr);
 }
 
-let createAccountQSTR = () => {
-    let qstr = ''
-    return db.query(qstr)
+let createAccountQSTR = (credentials) => {
+    let qstr = 
+    `INSERT INTO ${credentials.type} (email, alias, hash)
+    VALUES
+    ('${credentials.email}', '${credentials.alias}', '${credentials.hash}');`;
+    return db.query(qstr);
 }
 
 let processLoginQSTR = () => {
-    let qstr = ''
+    let qstr = 
+    ``;
     return db.query(qstr)
 }
 
 
 module.exports = {
-    getAllQSTR
+    getAllQSTR,
+    createAccountQSTR
 }
 
 
