@@ -75,7 +75,6 @@ let processLogin = (request, response) => {
       if (isValid) {
         let token = createToken(user);
         user.token = token;
-        console.log(user);
         response.json(user);
       } else {
         response.send("Invalid password. Maybe try again?");
@@ -87,6 +86,7 @@ let processLogin = (request, response) => {
 
 
 let getAll = (request, response) => {
+  //run authorize. pass into it request.headers.
     db.getAllQSTR()
     .then(all => response.json(all))
 }
@@ -94,7 +94,7 @@ let getAll = (request, response) => {
 let getOne = (request, response) => {
   db.getOneQSTR(request.params.id)
   .then(one => {
-    response.json(one)
+    response.json(one);
   });
 }
 
