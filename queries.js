@@ -26,17 +26,18 @@ let createAccountQSTR = (credentials) => {
     return db.query(qstr);
 }
 
-let processLoginQSTR = () => {
-    let qstr = 
-    ``;
-    return db.query(qstr)
-}
 
 let findRecordQSTR = (table, attribute, input) => {
   let qstr = 
-  `SELECT * FROM ${table} WHERE ${attribute} = '${input}';`;
+  `SELECT * FROM ${table} WHERE ${attribute} = '${input}';`
   return db.query(qstr);
 }
+
+let getOneQSTR = (input) => {
+    let qstr = 
+    `SELECT * FROM pieces WHERE id = '${input}';`
+    return db.one(qstr);
+  }
 
 let findUserQSTR = (input) => {
   let qstr = 
@@ -49,7 +50,8 @@ let findUserQSTR = (input) => {
 module.exports = {
     getAllQSTR,
     createAccountQSTR,
-    findUserQSTR
+    findUserQSTR,
+    getOneQSTR
 }
 
 

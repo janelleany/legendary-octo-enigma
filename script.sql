@@ -30,7 +30,7 @@ CREATE TABLE pieces (
     color VARCHAR(100) [] NOT NULL,
     size VARCHAR(100) [] NOT NULL,
     zip NUMERIC(5) NOT NULL,
-    image TEXT NOT NULL,
+    img TEXT NOT NULL,
     createddate TIMESTAMPTZ,
     PRIMARY KEY (id)
 );
@@ -43,12 +43,12 @@ CREATE TABLE portfolio (
     PRIMARY KEY (id)
 );
 
--- INSERT INTO pieces (caption, style, color, size, zip, images, tattooerid, active)
+-- INSERT INTO pieces (caption, style, color, size, zip, img, tattooerid, active)
 --     VALUES
---         ('goldfish',  {'Hyper-realistic', '3D', 'Dotwork'}, {'Color'}, {'Medium', 'Large'}, '30307', {'http://1.bp.blogspot.com/-tDHqfK4oZgI/UOwbeYpFLYI/AAAAAAAAE4s/FB36NyaLd1k/s1600/Godlfish-Wallpapers-09.jpg', 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fdigitalfire.ucd.ie%2Fwp-content%2Fuploads%2F2012%2F10%2Fshutterstock_70361200.jpg&f=1'}, 'e394eb0f-c15c-42c7-83f2-1d3e018dc1e5'),
---         ('eyeball like MC Escher', {'3D', 'Biomechanical'}, {'Black', 'Color'}, {'Small'}, '30324', {'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.3aPvCIZdOTXLiCWnv75BAAHaFj%26pid%3D15.1&f=1'}, '7a6832c1-f430-47c5-99fd-dd8b04b63d40'),
---         ('A victorian, shapeshifting raven', {'New School'}, {'Black'}, {'Large'}, '10472', {'https://creatureofthewheel.files.wordpress.com/2013/02/bauchelain-korbal.jpg', 'https://i.ytimg.com/vi/DDv_PlrBg14/maxresdefault.jpg'}, '44a713c1-5355-4093-8ec2-b160fe2427c5'),
---         ('A geo turtle with an island on his back', {'Geometric'}, {'Color'}, {'Large'}, '20833', {'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2F1.bp.blogspot.com%2F-g1DR8c9QL6c%2FUXVvfPYoa-I%2FAAAAAAAAA-A%2Fc26XfELhFog%2Fs640%2FTurtle%2BIsland.jpg&f=1'}, 'd292871b-038b-4162-a752-bbc565970274');
+--         ('goldfish',  ARRAY ['Hyper-realistic', '3D', 'Dotwork'], ARRAY ['Color'], ARRAY ['Medium', 'Large'], '30307', 'http://1.bp.blogspot.com/-tDHqfK4oZgI/UOwbeYpFLYI/AAAAAAAAE4s/FB36NyaLd1k/s1600/Godlfish-Wallpapers-09.jpg', '174c3a4a-4808-4bb3-8e05-d5ce20b3558b', 'true'),
+--         ('eyeball like MC Escher', ARRAY ['3D', 'Biomechanical'], ARRAY ['Black', 'Color'], ARRAY ['Small'], '30324', 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.3aPvCIZdOTXLiCWnv75BAAHaFj%26pid%3D15.1&f=1', '174c3a4a-4808-4bb3-8e05-d5ce20b3558b', 'true'),
+--         ('A victorian, shapeshifting raven', ARRAY ['New School'], ARRAY ['Black'], ARRAY ['Large'], '10472', 'https://creatureofthewheel.files.wordpress.com/2013/02/bauchelain-korbal.jpg', '174c3a4a-4808-4bb3-8e05-d5ce20b3558b', 'true'),
+--         ('A geo turtle with an island on his back', ARRAY ['Geometric'], ARRAY ['Color'], ARRAY ['Large'], '20833', 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2F1.bp.blogspot.com%2F-g1DR8c9QL6c%2FUXVvfPYoa-I%2FAAAAAAAAA-A%2Fc26XfELhFog%2Fs640%2FTurtle%2BIsland.jpg&f=1', '174c3a4a-4808-4bb3-8e05-d5ce20b3558b', 'true');
 
 -- INSERT INTO portfolio (upload, tattooerid)
 --     VALUES

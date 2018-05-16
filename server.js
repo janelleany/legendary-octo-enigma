@@ -25,15 +25,18 @@ app.post("/", function(request, response) {
 });
 
 
-app.post("/login", function(request, response) {
+app.post("/login", (request, response) => {
     processLogin(request, response);
 });
 
 
 app.get('/all', (request, response) => {
     getAll(request, response);
-})
+});
 
+app.get('/all/:id', (request, response) => {
+  getOne(request, response);
+});
 
 let createAccount = (request, response) => {
   let {email, password, alias, type} = request.body;
@@ -88,11 +91,28 @@ let getAll = (request, response) => {
     .then(all => response.json(all))
 }
 
+let getOne = (request, response) => {
+  db.getOneQSTR(request.params.id)
+  .then(one => {
+    response.json(one)
+  });
+}
+
+
 let createToken = (user) => {
   let token = jwt.sign({ id: user.id }, STRING, { expiresIn: "7d" });
   return token;
-};
+}
 
+let authorize = (token, string) => {
+  let decoded = false;
+  try {
+    decoded = jwt.verify(token, string);
+  } catch (e) {
+    decoded = false;
+  }
+  return decoded;
+}
 
 
 
