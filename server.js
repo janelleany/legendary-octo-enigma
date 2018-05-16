@@ -1,13 +1,20 @@
 const express = require('express');
 const app = express();
+require('dotenv').config();
+
+const {SERVER_PORT, STRING} = process.env;
+
 const path = require('path');
 const cors = require('cors');
-const db = require('./queries');
+const bodyParser = require('body-parser');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken');
+const string = process.env.STRING;
 
+const db = require('./queries');
 
 app.use(cors());
 app.use(bodyParser());
@@ -19,7 +26,6 @@ app.post("/", function(request, response) {
 
 
 app.post("/login", function(request, response) {
-    console.log(request.body);
     processLogin(request, response);
 });
 
@@ -53,8 +59,27 @@ let createAccount = (request, response) => {
 
 
 let processLogin = (request, response) => {
-    db.processLoginQSTR()
-    .then(credentials => response.json(credentials))
+  let {email, password} = request.body;
+  db.findUserQSTR(email)
+  .then(user => {
+    return user;
+  })
+  .catch(error => {response.status(401).send("User not found")})
+  .then(user => {
+    let {hash} = user;
+    bcrypt.compare(password, hash)
+    .then(isValid => {
+      if (isValid) {
+        let token = createToken(user);
+        user.token = token;
+        console.log(user);
+        response.json(user);
+      } else {
+        response.send("Invalid password. Maybe try again?");
+      }
+    })
+    .catch(error => {response.status(400).send("Didn't catch that. Maybe try again?")})
+  });
 }
 
 
@@ -63,9 +88,14 @@ let getAll = (request, response) => {
     .then(all => response.json(all))
 }
 
+let createToken = (user) => {
+  let token = jwt.sign({ id: user.id }, STRING, { expiresIn: "7d" });
+  return token;
+};
 
 
 
-app.listen(3001, () => {
-    console.log('this server is listening on port 3001')
-})
+
+app.listen(SERVER_PORT, () => {
+    console.log(`this server is listening on port ${SERVER_PORT}`)
+});

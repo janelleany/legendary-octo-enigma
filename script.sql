@@ -23,7 +23,7 @@ CREATE TABLE collectors (
 
 CREATE TABLE pieces (
     id UUID DEFAULT uuid_generate_v4(),
-    tattoerid UUID REFERENCES tattooers(id) NOT NULL,
+    tattooerid UUID REFERENCES tattooers(id) NOT NULL,
     active BOOLEAN NOT NULL,
     caption TEXT NOT NULL,
     style VARCHAR(100) [] NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE pieces (
 
 CREATE TABLE portfolio (
     id UUID DEFAULT uuid_generate_v4(),
-    tattoerid UUID REFERENCES tattooers(id) NOT NULL,
+    tattooerid UUID REFERENCES tattooers(id) NOT NULL,
     images TEXT [] NOT NULL,
     createddate TIMESTAMPTZ,
     PRIMARY KEY (id)

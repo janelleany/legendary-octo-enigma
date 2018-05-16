@@ -1,17 +1,20 @@
 const pg = require('pg-promise')();
+require('dotenv').config();
 
+const {DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD} = process.env;
+console.log(DB_PORT);
 const dbconfig = {
-    host: 'localhost',
-    port: 5432,
-    database: 'inkkarma',
-    user: 'jra',
-    password: 'sweettuba'
+    host: `${DB_HOST}`,
+    port: `${DB_PORT}`,
+    database: `${DB_NAME}`,
+    user: `${DB_USER}`,
+    password: `${DB_PASSWORD}`
 };
 
 const db = pg(dbconfig);
 
 let getAllQSTR = () => {
-    let qstr = 'SELECT * FROM queries;'
+    let qstr = 'SELECT * FROM pieces;'
     return db.query(qstr);
 }
 
@@ -29,10 +32,24 @@ let processLoginQSTR = () => {
     return db.query(qstr)
 }
 
+let findRecordQSTR = (table, attribute, input) => {
+  let qstr = 
+  `SELECT * FROM ${table} WHERE ${attribute} = '${input}';`;
+  return db.query(qstr);
+}
+
+let findUserQSTR = (input) => {
+  let qstr = 
+  `SELECT * FROM tattooers WHERE email = '${input}' 
+  UNION
+  SELECT * FROM collectors WHERE email = '${input}';`;
+  return db.one(qstr);
+}
 
 module.exports = {
     getAllQSTR,
-    createAccountQSTR
+    createAccountQSTR,
+    findUserQSTR
 }
 
 
