@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+// const urlOfServer = 'https://cryptic-harbor-57322.herokuapp.com/';
+
+const PORT = process.env.PORT || 5000
+
 
 const queries = require ('./json/queries');
 
@@ -14,8 +18,4 @@ app.get('/all', (request, response) => {
     response.json(queries);
 })
 
-
-
-app.listen(3001, () => {
-    console.log('this server is listening on port 3001')
-})
+app.listen(PORT, () => console.log(`this server is listening on ${ PORT }`))
