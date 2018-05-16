@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const jwt = require('jsonwebtoken');
-const string = process.env.STRING;
+const STRING = process.env.STRING;
 
 const db = require('./queries');
 
@@ -22,21 +22,21 @@ app.use(cors());
 app.use(bodyParser());
 
 
-app.post('/', function(request, response) {
+app.post('/users', function(request, response) {
     createAccount(request, response);
 });
 
 
-app.post('/login', (request, response) => {
+app.post('/token', (request, response) => {
     processLogin(request, response);
 });
 
 
-app.get('/all', (request, response) => {
+app.get('/pieces', (request, response) => {
     getAll(request, response);
 });
 
-app.get('/all/:id', (request, response) => {
+app.get('/pieces/:id', (request, response) => {
   getOne(request, response);
 });
 
@@ -106,10 +106,10 @@ let createToken = (user) => {
   return token;
 }
 
-let authorize = (token, string) => {
+let authorize = (token, STRING) => {
   let decoded = false;
   try {
-    decoded = jwt.verify(token, string);
+    decoded = jwt.verify(token, STRING);
   } catch (e) {
     decoded = false;
   }
