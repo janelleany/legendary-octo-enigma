@@ -25,12 +25,12 @@ app.use(cors());
 app.use(bodyParser());
 
 
-app.post("/", function(request, response) {
+app.post('/', function(request, response) {
     createAccount(request, response);
 });
 
 
-app.post("/login", (request, response) => {
+app.post('/login', (request, response) => {
     processLogin(request, response);
 });
 
@@ -105,7 +105,7 @@ let getOne = (request, response) => {
 
 
 let createToken = (user) => {
-  let token = jwt.sign({ id: user.id }, STRING, { expiresIn: "7d" });
+  let token = jwt.sign({ id: user.id }, STRING, { expiresIn: '7d' });
   return token;
 }
 
@@ -119,12 +119,4 @@ let authorize = (token, string) => {
   return decoded;
 }
 
-<<<<<<< HEAD
-app.listen(PORT, () => console.log(`this server is listening on ${ PORT }`))
-=======
-
-
-app.listen(SERVER_PORT, () => {
-    console.log(`this server is listening on port ${SERVER_PORT}`)
-});
->>>>>>> cd31ade1f1b0985e7550a32e2e70fef91d254c93
+app.listen(PORT, () => console.log(`this server is listening on ${ PORT }`));
