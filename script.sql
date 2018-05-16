@@ -29,6 +29,8 @@ CREATE TABLE pieces (
     style VARCHAR(100) [] NOT NULL,
     color VARCHAR(100) [] NOT NULL,
     size VARCHAR(100) [] NOT NULL,
+    price NUMERIC(3) NOT NULL,
+    deposit NUMERIC(2) NOT NULL,
     zip NUMERIC(5) NOT NULL,
     img TEXT NOT NULL,
     createddate TIMESTAMPTZ,

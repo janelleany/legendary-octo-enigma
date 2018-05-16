@@ -1,8 +1,8 @@
 const pg = require('pg-promise')();
 require('dotenv').config();
 
+
 const {DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD} = process.env;
-console.log(DB_PORT);
 const dbconfig = {
     host: `${DB_HOST}`,
     port: `${DB_PORT}`,
@@ -11,12 +11,9 @@ const dbconfig = {
     password: `${DB_PASSWORD}`
 };
 
+
 const db = pg(dbconfig);
 
-let getAllQSTR = () => {
-    let qstr = 'SELECT * FROM pieces;'
-    return db.query(qstr);
-}
 
 let createAccountQSTR = (credentials) => {
     let qstr = 
@@ -27,35 +24,80 @@ let createAccountQSTR = (credentials) => {
 }
 
 
+let findUserQSTR = (input) => {
+    let qstr = 
+    `SELECT * FROM tattooers WHERE email = '${input}' 
+    UNION
+    SELECT * FROM collectors WHERE email = '${input}';`;
+    return db.one(qstr);
+  }
+
+
 let findRecordQSTR = (table, attribute, input) => {
   let qstr = 
   `SELECT * FROM ${table} WHERE ${attribute} = '${input}';`
   return db.query(qstr);
 }
 
-let getOneQSTR = (input) => {
+
+let getAllQSTR = () => {
+    let qstr = 'SELECT * FROM pieces;'
+    return db.query(qstr);
+}
+
+
+let getOneQSTR = (id) => {
     let qstr = 
-    `SELECT * FROM pieces WHERE id = '${input}';`
+    `SELECT * FROM pieces WHERE id = '${id}';`
     return db.one(qstr);
   }
 
-let findUserQSTR = (input) => {
-  let qstr = 
-  `SELECT * FROM tattooers WHERE email = '${input}' 
-  UNION
-  SELECT * FROM collectors WHERE email = '${input}';`;
-  return db.one(qstr);
-}
+
+  let createPieceQSTR = (specs) => {
+    let {
+        tattooerid, 
+        active, 
+        caption, 
+        style, 
+        color, 
+        size,
+        price,
+        deposit, 
+        zip, 
+        img, 
+        createddate
+    } = specs;
+    let qstr = 
+    `INSERT INTO pieces 
+    (tattooerid, 
+    active, 
+    caption, 
+    style, 
+    color, 
+    size,
+    price,
+    deposit,
+    zip, 
+    img, 
+    createddate)
+    VALUES 
+    (${tattooerid}, ${active}, ${caption}, ${style}, ${color}, ${size}, ${price}, ${deposit}, ${zip}, ${img}, ${createddate});`
+    return db.query(qstr);
+  }
+
 
 module.exports = {
-    getAllQSTR,
     createAccountQSTR,
     findUserQSTR,
-    getOneQSTR
+    findRecordQSTR,
+    getOneQSTR,
+    getAllQSTR,
+    createPieceQSTR
 }
 
 
 
+// example of count
 
 // SELECT
 //  customer_id,

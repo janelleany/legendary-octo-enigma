@@ -14,32 +14,46 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const jwt = require('jsonwebtoken');
-const STRING = process.env.STRING;
+const SIGNATURE = process.env.SIGNATURE;
 
 const db = require('./queries');
 
+//middleware
 app.use(cors());
 app.use(bodyParser());
 
-
+//ROUTER FUNCTIONS
+//route: POST to '/users' to create user account
 app.post('/users', function(request, response) {
     createAccount(request, response);
 });
 
 
+//route: POST to '/token' to login user
 app.post('/token', (request, response) => {
     processLogin(request, response);
 });
 
 
+//route: GET to '/pieces' to return all pieces
 app.get('/pieces', (request, response) => {
     getAll(request, response);
 });
 
+
+//route: GET to '/pieces/:id' to return a particular piece
 app.get('/pieces/:id', (request, response) => {
   getOne(request, response);
 });
 
+
+//route: POST to '/pieces/' to create a new piece
+app.post('/pieces/', (request, response) => {
+  createPiece(request, response);
+});
+
+
+// router callback functions for database queries & other controls
 let createAccount = (request, response) => {
   let {email, password, alias, type} = request.body;
   bcrypt.hash(password, saltRounds)
@@ -88,32 +102,57 @@ let processLogin = (request, response) => {
 
 
 let getAll = (request, response) => {
-  //run authorize. pass into it request.headers.
+  authorizeRequest(request.headers.authorization);
+  if (decoded) {
     db.getAllQSTR()
     .then(all => response.json(all))
+    .catch(error => response.status(404).send("File not found. Maybe try again?"));
+  } else {
+    response.status(401).send("Unauthorized User")
+  }
 }
 
+
 let getOne = (request, response) => {
-  db.getOneQSTR(request.params.id)
-  .then(one => {
-    response.json(one);
-  });
+  authorizeRequest(request.headers.authorization);
+  if (decoded) {
+    db.getOneQSTR(request.params.id)
+    .then(one => response.json(one))
+  } else {
+    response.status(401).send("Unauthorized User")
+  }
 }
 
 
 let createToken = (user) => {
-  let token = jwt.sign({ id: user.id }, STRING, { expiresIn: '7d' });
+  let token = jwt.sign({ id: user.id }, SIGNATURE, { expiresIn: '7d' });
   return token;
 }
 
-let authorize = (token, STRING) => {
-  let decoded = false;
+
+let authorizeRequest = (token) => {
+  let decoded = null;
   try {
-    decoded = jwt.verify(token, STRING);
-  } catch (e) {
-    decoded = false;
-  }
+    decoded = jwt.verify(token, SIGNATURE);
+  } 
+  catch (e) {}
   return decoded;
 }
+
+
+let createPiece = (request, response) => {
+  authorizeRequest(request.headers.authorization);
+  if (decoded) {
+    let specs = request.body;
+    db.createPieceQSTR(specs)
+    .then(newPiece => {
+      response.json(newPiece);
+    })
+    .catch(error => response.status(400).send("Bad Request. Check piece's specifications."));
+  } else {
+    response.status(401).send("Unauthorized User");
+  }
+}
+
 
 app.listen(PORT, () => console.log(`this server is listening on ${ PORT }`));
