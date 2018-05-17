@@ -23,6 +23,10 @@ app.use(cors());
 app.use(bodyParser());
 
 //ROUTER FUNCTIONS
+
+//route: GET to '/' for opening screen
+app.get('/', (request, response) => response.send("Welcome"));
+
 //route: POST to '/users' to create user account
 app.post('/users', function(request, response) {
     createAccount(request, response);
