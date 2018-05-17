@@ -72,6 +72,7 @@ let createAccount = (request, response) => {
     })
     .then(credentials => {
       db.createAccountQSTR(credentials);
+      console.log(credentials);
       return credentials;
     })
     .then(credentials => {
