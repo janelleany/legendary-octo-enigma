@@ -147,12 +147,14 @@ let createPiece = (request, response) => {
   let decoded = authorizeRequest(request.headers.authorization);
   if (decoded) {
     let specs = request.body;
+    specs.tattooerid = 'e65fdd96-a64c-4918-b2b3-a9a91b4ccba8';
+    specs.tattooeralias = 'spotsgiraffe';
+    specs.active = true;
     db.createPieceQSTR(specs)
-    .then(response.send("New piece saved"))
+    .then(data => response.json(data))
     .catch(error => response.status(400).send("Bad Request. Check piece's specifications."));
-  } else {
-    response.status(401).send("Unauthorized User");
   }
+   else { response.status(401).send("Unauthorized User"); }
 }
 
 

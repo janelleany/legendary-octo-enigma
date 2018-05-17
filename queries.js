@@ -83,8 +83,8 @@ let getOneQSTR = (id) => {
     img, 
     createddate)
     VALUES 
-    ('${tattooerid}', '${tattooeralias}, '${active}', '${caption}', '${style}', '${color}', '${size}', '${price}', '${deposit}', '${zip}', '${img}', '${createddate}');`;
-    return db.query(qstr);
+    ('${tattooerid}', '${tattooeralias}', ${active}, '${caption}', '${style}', '${color}', '${size}', ${price}, ${deposit}, ${zip}, '${img}', '${createddate}') RETURNING * ;`;
+    return db.one(qstr)
   }
 
 
