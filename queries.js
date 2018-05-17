@@ -56,6 +56,7 @@ let getOneQSTR = (id) => {
   let createPieceQSTR = (specs) => {
     let {
         tattooerid, 
+        tattooeralias,
         active, 
         caption, 
         style, 
@@ -70,6 +71,7 @@ let getOneQSTR = (id) => {
     let qstr = 
     `INSERT INTO pieces 
     (tattooerid, 
+    tattooeralias,
     active, 
     caption, 
     style, 
@@ -81,7 +83,7 @@ let getOneQSTR = (id) => {
     img, 
     createddate)
     VALUES 
-    (${tattooerid}, ${active}, ${caption}, ${style}, ${color}, ${size}, ${price}, ${deposit}, ${zip}, ${img}, ${createddate});`
+    ('${tattooerid}', '${tattooeralias}, '${active}', '${caption}', '${style}', '${color}', '${size}', '${price}', '${deposit}', '${zip}', '${img}', '${createddate}');`;
     return db.query(qstr);
   }
 

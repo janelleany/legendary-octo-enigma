@@ -72,11 +72,9 @@ let createAccount = (request, response) => {
     })
     .then(credentials => {
       db.createAccountQSTR(credentials);
-      console.log(credentials);
       return credentials;
     })
     .then(credentials => {
-      console.log(credentials);
       response.json(credentials);
     });
 }
@@ -101,13 +99,13 @@ let processLogin = (request, response) => {
         response.send("Invalid password. Maybe try again?");
       }
     })
-    .catch(error => {response.status(400).send("Didn't catch that. Maybe try again?")})
+    .catch(error => {response.status(400).send("Couldn't create a token for you. Maybe try again?")});
   });
 }
 
 
 let getAll = (request, response) => {
-  authorizeRequest(request.headers.authorization);
+  let decoded = authorizeRequest(request.headers.authorization);
   if (decoded) {
     db.getAllQSTR()
     .then(all => response.json(all))
@@ -119,7 +117,7 @@ let getAll = (request, response) => {
 
 
 let getOne = (request, response) => {
-  authorizeRequest(request.headers.authorization);
+  let decoded = authorizeRequest(request.headers.authorization);
   if (decoded) {
     db.getOneQSTR(request.params.id)
     .then(one => response.json(one))
@@ -146,13 +144,11 @@ let authorizeRequest = (token) => {
 
 
 let createPiece = (request, response) => {
-  authorizeRequest(request.headers.authorization);
+  let decoded = authorizeRequest(request.headers.authorization);
   if (decoded) {
     let specs = request.body;
     db.createPieceQSTR(specs)
-    .then(newPiece => {
-      response.json(newPiece);
-    })
+    .then(response.send("New piece saved"))
     .catch(error => response.status(400).send("Bad Request. Check piece's specifications."));
   } else {
     response.status(401).send("Unauthorized User");
